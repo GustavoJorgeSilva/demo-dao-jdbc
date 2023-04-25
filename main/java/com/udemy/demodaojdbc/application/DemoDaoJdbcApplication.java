@@ -1,5 +1,7 @@
 package com.udemy.demodaojdbc.application;
 
+import com.udemy.demodaojdbc.model.dao.DaoFactory;
+import com.udemy.demodaojdbc.model.dao.SellerDao;
 import com.udemy.demodaojdbc.model.entities.Department;
 import com.udemy.demodaojdbc.model.entities.Seller;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +25,9 @@ public class DemoDaoJdbcApplication {
 
         Date aniversario = sdf.parse("11/11/1994");
         Seller sl = new Seller(1,"Gustavo","gustavo@gmail.com",aniversario,2000.0,department);
+
+        SellerDao sellerDao = DaoFactory.createSellerDao();
+
         System.out.println(sl);
 
 
