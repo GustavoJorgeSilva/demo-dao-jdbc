@@ -51,8 +51,8 @@ public class Department implements Serializable {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Department: " + name + " ");
-        sb.append("Id: " + id);
-        
+        sb.append("Id department: " + id);
+
 
         return sb.toString();
     }
