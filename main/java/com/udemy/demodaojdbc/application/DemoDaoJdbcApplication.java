@@ -35,6 +35,14 @@ public class DemoDaoJdbcApplication {
             System.out.println(seller1);
         }
 
+        System.out.println("\n=== Test 3: Seller findAll");
+
+        list = sellerDao.findAll();
+        for (Seller seller1 : list){
+            System.out.println(seller1);
+        }
+
+
 
 
 
