@@ -6,10 +6,7 @@ import com.udemy.demodaojdbc.model.dao.SellerDao;
 import com.udemy.demodaojdbc.model.entities.Department;
 import com.udemy.demodaojdbc.model.entities.Seller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +22,41 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void insert(Seller obj) {
+
+        PreparedStatement statement = null;
+
+        try {
+            statement = conn.prepareStatement("insert into seller " +
+                            "(Name,Email,BirthDate,BaseSalary,DepartmentId) " +
+                            "values (?,?,?,?,?)",
+                    Statement.RETURN_GENERATED_KEYS);
+
+            statement.setString(1, obj.getName());
+            statement.setString(2, obj.getEmail());
+            statement.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+            statement.setDouble(4, obj.getBaseSalary());
+            statement.setInt(5, obj.getDepartment().getId());
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet resultSet1 = statement.getGeneratedKeys();
+                if (resultSet1.next()) {
+                    int id = resultSet1.getInt(1);
+                    obj.setId(id);
+                }
+                DB.closeResultSet(resultSet1);
+            } else {
+                throw new DbException("Unexpected error! No rows affected!");
+            }
+
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(statement);
+
+        }
 
     }
 
@@ -70,23 +102,6 @@ public class SellerDaoJDBC implements SellerDao {
 
     }
 
-    private Seller instantiateSeller(ResultSet resultSet, Department dep) throws SQLException {
-        Seller obj = new Seller();
-        obj.setId(resultSet.getInt("Id"));
-        obj.setName(resultSet.getString("Name"));
-        obj.setEmail(resultSet.getString("Email"));
-        obj.setBaseSalary(resultSet.getDouble("BaseSalary"));
-        obj.setBirthDate(resultSet.getDate("BirthDate"));
-        obj.setDepartment(dep);
-        return obj;
-    }
-
-    private Department instantiateDepartment(ResultSet resultSet) throws SQLException {
-        Department dep = new Department();
-        dep.setId(resultSet.getInt("DepartmentId"));
-        dep.setName(resultSet.getString("DepName"));
-        return dep;
-    }
 
     @Override
     public List<Seller> findAll() {
@@ -109,7 +124,7 @@ public class SellerDaoJDBC implements SellerDao {
 
                 Department dep = map.get(resultSet.getInt("DepartmentId"));
 
-                if (dep == null){
+                if (dep == null) {
                     dep = instantiateDepartment(resultSet);
                     map.put(resultSet.getInt("DepartmentId"), dep);
                 }
@@ -127,7 +142,7 @@ public class SellerDaoJDBC implements SellerDao {
         }
 
 
-        }
+    }
 
 
     @Override
@@ -152,9 +167,11 @@ public class SellerDaoJDBC implements SellerDao {
 
             while (resultSet.next()) {
 
+                // METODO PARA REAPROVEITAR O OBJ DEPARTMENT ASSIM FAZENDO COM QUE CASO TENHA MAIS DE 1 OBJ SELLER
+                // APONTEM PARA O MESMO OBJ DEPARTMENT
                 Department dep = map.get(resultSet.getInt("DepartmentId"));
 
-                if (dep == null){
+                if (dep == null) {
                     dep = instantiateDepartment(resultSet);
                     map.put(resultSet.getInt("DepartmentId"), dep);
                 }
@@ -171,5 +188,26 @@ public class SellerDaoJDBC implements SellerDao {
             DB.closeResultSet(resultSet);
         }
     }
+
+    // METODOS AUXILIARES PARA INSTANCIAÇÃO DO SELLER E DEPARTMENT
+
+    private Seller instantiateSeller(ResultSet resultSet, Department dep) throws SQLException {
+        Seller obj = new Seller();
+        obj.setId(resultSet.getInt("Id"));
+        obj.setName(resultSet.getString("Name"));
+        obj.setEmail(resultSet.getString("Email"));
+        obj.setBaseSalary(resultSet.getDouble("BaseSalary"));
+        obj.setBirthDate(resultSet.getDate("BirthDate"));
+        obj.setDepartment(dep);
+        return obj;
+    }
+
+    private Department instantiateDepartment(ResultSet resultSet) throws SQLException {
+        Department dep = new Department();
+        dep.setId(resultSet.getInt("DepartmentId"));
+        dep.setName(resultSet.getString("DepName"));
+        return dep;
+    }
+
 
 }

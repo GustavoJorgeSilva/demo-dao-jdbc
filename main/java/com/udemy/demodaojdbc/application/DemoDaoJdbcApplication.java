@@ -42,6 +42,20 @@ public class DemoDaoJdbcApplication {
             System.out.println(seller1);
         }
 
+        System.out.println("\n=== Test 4: Seller Insert");
+        Seller func = new Seller(null,"Gustavo Jorge","gustavo@gmail.com",new Date(),3000.0,department);
+        sellerDao.insert(func);
+        System.out.println("Insert! New id: " + func.getId());
+
+
+        list = sellerDao.findAll();
+        for (Seller seller1 : list){
+            System.out.println(seller1);
+        }
+
+
+
+
 
 
 
