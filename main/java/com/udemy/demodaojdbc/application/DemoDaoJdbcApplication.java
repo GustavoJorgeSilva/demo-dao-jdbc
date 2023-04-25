@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootApplication
 public class DemoDaoJdbcApplication {
@@ -26,6 +27,13 @@ public class DemoDaoJdbcApplication {
         Seller seller = sellerDao.findById(3);
 
         System.out.println(seller);
+
+        System.out.println("\n=== Test 2: Seller findByDepartment");
+        Department department = new Department(2,null);
+        List<Seller> list = sellerDao.findByDepartment(department);
+        for (Seller seller1 : list){
+            System.out.println(seller1);
+        }
 
 
 
