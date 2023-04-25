@@ -20,15 +20,13 @@ public class DemoDaoJdbcApplication {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 
-        Department department = new Department(1,"Books");
-        System.out.println(department);
-
-        Date aniversario = sdf.parse("11/11/1994");
-        Seller sl = new Seller(1,"Gustavo","gustavo@gmail.com",aniversario,2000.0,department);
-
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
-        System.out.println(sl);
+        Seller seller = sellerDao.findById(3);
+
+        System.out.println(seller);
+
+
 
 
 
