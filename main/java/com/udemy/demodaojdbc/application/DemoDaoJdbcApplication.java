@@ -42,17 +42,23 @@ public class DemoDaoJdbcApplication {
             System.out.println(seller1);
         }
 
-        System.out.println("\n=== Test 4: Seller Insert");
-        Seller func = new Seller(null,"Gustavo Jorge","gustavo@gmail.com",new Date(),3000.0,department);
-        sellerDao.insert(func);
-        System.out.println("Insert! New id: " + func.getId());
+//        System.out.println("\n=== Test 4: Seller Insert");
+//        Seller func = new Seller(null,"Gustavo Jorge","gustavo@gmail.com",new Date(),3000.0,department);
+//        sellerDao.insert(func);
+//        System.out.println("Insert! New id: " + func.getId());
+//
+//
+//        list = sellerDao.findAll();
+//        for (Seller seller1 : list){
+//            System.out.println(seller1);
+//        }
 
 
-        list = sellerDao.findAll();
-        for (Seller seller1 : list){
-            System.out.println(seller1);
-        }
-
+        System.out.println("\n=== Test 5: Seller Update");
+        seller = sellerDao.findById(2);
+        seller.setName("Jao gomes");
+        sellerDao.update(seller);
+        System.out.println("Update completed! ");
 
 
 
