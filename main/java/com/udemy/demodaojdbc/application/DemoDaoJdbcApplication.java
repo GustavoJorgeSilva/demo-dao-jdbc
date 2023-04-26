@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 @SpringBootApplication
 public class DemoDaoJdbcApplication {
@@ -19,6 +20,7 @@ public class DemoDaoJdbcApplication {
         SpringApplication.run(DemoDaoJdbcApplication.class, args);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Scanner leitor = new Scanner(System.in);
 
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
@@ -60,7 +62,13 @@ public class DemoDaoJdbcApplication {
         sellerDao.update(seller);
         System.out.println("Update completed! ");
 
+        System.out.println("\n=== Test 6: Seller Delete");
+        System.out.println("Enter the id of the employee you want to delete");
+        int id = leitor.nextInt();
+        sellerDao.deleteById(id);
+        System.out.println("Done!");
 
+        leitor.close();
 
 
 
