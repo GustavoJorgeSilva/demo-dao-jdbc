@@ -132,7 +132,6 @@ public class SellerDaoJDBC implements SellerDao {
             if (resultSet.next()) {
 
                 Department dep = instantiateDepartment(resultSet);
-
                 Seller obj = instantiateSeller(resultSet, dep);
                 return obj;
             }
